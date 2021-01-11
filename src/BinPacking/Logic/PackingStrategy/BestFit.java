@@ -11,6 +11,8 @@ import BinPacking.Data.Logic.Box.Box;
  */
 public class BestFit implements PackingStrategy {
     @Override
+    // important: Best Fit 的核心搜索逻辑
+    // 深度优先的树搜索，会遍历所有的子节点，找到最合适的点
     public BinTree search(BinTree binTreeNode, Box box) {
         BinTree minBinNode;
 
@@ -30,9 +32,10 @@ public class BestFit implements PackingStrategy {
         return bin.getState() == Bin.State.EMPTY && boxFitsToBin(bin, box);
     }
 
+    // min是会递归调用的，会找到最合适的
     private BinTree min(BinTree firstNode, BinTree secondNode){
         BinTree minimumVolumeNode;
-        if(isEmpty(firstNode))
+        if(isNull(firstNode))
             minimumVolumeNode = secondNode;
         else
             minimumVolumeNode = continueSearch(firstNode, secondNode);
@@ -40,12 +43,12 @@ public class BestFit implements PackingStrategy {
         return minimumVolumeNode;
     }
 
-    private boolean isEmpty(BinTree node){
+    private boolean isNull(BinTree node){
         return node == null;
     }
 
     private BinTree continueSearch(BinTree firstNode, BinTree secondNode){
-        if(isEmpty(secondNode))
+        if(isNull(secondNode))
             return firstNode;
         else
             return getSmallerVolumeNode(firstNode, secondNode);
@@ -54,13 +57,14 @@ public class BestFit implements PackingStrategy {
     private BinTree getSmallerVolumeNode(BinTree firstNode, BinTree secondNode){
         Bin first = firstNode.getData();
         Bin second = secondNode.getData();
-        if(isFirstGreater(first, second))
+        if(isVolumeGreater(first, second))
+            // 因为是Best fit, 如果first的可用空间大于second的可用空间，那么选择更加fit的secondNode
             return secondNode;
         else
             return firstNode;
     }
 
-    private boolean isFirstGreater(Bin first, Bin second){
+    private boolean isVolumeGreater(Bin first, Bin second){
         return second.getVolume() < first.getVolume();
     }
 

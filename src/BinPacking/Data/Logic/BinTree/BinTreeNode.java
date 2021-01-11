@@ -68,6 +68,27 @@ public class BinTreeNode implements BinTree{
      * If one BinType is chosen the rest must be removed. The BinTypes represent new spaces created after box insertion.
      * @param box Box object.
      */
+    // 在box被加入到bin以后，添加12个子空间（可能重合），每一面都会有4个子空间如下：
+    // ********************************** ^
+    // *                                * |
+    // *                                * |
+    // *                                * |
+    // *                                * |
+    // *                                * bin height
+    // *                         ******** | ^
+    // *                         *      * | |
+    // *                         *      * | box height
+    // *                         *      * | |
+    // ********************************** | |
+    //                          box width
+    // <-----------bin width------------>
+
+    // 这里举例一个面，4个可能性为 box width * box height; box width * bin height;
+    // bin width * box height; bin width * bin height
+    // 会在当前bin的children里面，存入subspace，包括它的长宽高以及在整个bin里的坐标起点
+    // 这里要注意，每个方向的同一个type组合起来+原有的box即构成了当前的bin
+    // 所以在删除的时候，一旦一个方向的一个type被选中要放入这个box了，那么其他type就不能再被选了，只会留下同一个type的互补的部分
+
     public void tryToAddSubspacesFor(Box box) {
         if (isFirstArgGreater(bin.getLength(), box.getLength())) {
             addChildWith(BinInjector.get(bin.getX() + box.getLength(), bin.getY(), bin.getZ(), bin.getLength() - box.getLength(), bin.getWidth(), bin.getHeight(), Bin.Type.A));

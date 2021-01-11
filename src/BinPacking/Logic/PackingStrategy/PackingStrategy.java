@@ -9,6 +9,7 @@ import BinPacking.Data.Logic.Box.Box;
  * Created by Xsignati on 24.01.2017.
  */
 public interface PackingStrategy {
+    // PackingStrategy接口，主要包括了bestfit和firstfit两种子策略
     /**
      * A recurrent method that search for a Bin that meet the conditions. The function look through Bin children
      * (the RootBin by default)
@@ -25,4 +26,5 @@ public interface PackingStrategy {
     }
 
     void prepareInput(ObservableList<Box> boxList);
+    // 根据box的体积进行排序（降序）
 }

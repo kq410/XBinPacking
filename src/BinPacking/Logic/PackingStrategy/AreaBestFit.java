@@ -8,6 +8,7 @@ import BinPacking.Data.Logic.Box.Box;
 /**
  * Created by Xsignati on 24.01.2017.
  */
+// TODO: AreaBestFit 中continueSearch有点问题
 public class AreaBestFit implements PackingStrategy {
     @Override
     public BinTree search(BinTree binTreeNode, Box box)  {
@@ -31,7 +32,7 @@ public class AreaBestFit implements PackingStrategy {
 
     private BinTree min(BinTree firstNode, BinTree secondNode){
         BinTree minimumVolumeNode;
-        if(isEmpty(firstNode))
+        if(isNull(firstNode))
             minimumVolumeNode = secondNode;
         else
             minimumVolumeNode = continueSearch(firstNode, secondNode);
@@ -39,12 +40,12 @@ public class AreaBestFit implements PackingStrategy {
         return minimumVolumeNode;
     }
 
-    private boolean isEmpty(BinTree node){
+    private boolean isNull(BinTree node){
         return node == null;
     }
 
     private BinTree continueSearch(BinTree firstNode, BinTree secondNode){
-        if(isEmpty(secondNode))
+        if(isNull(secondNode))
             return firstNode;
         else
             return getSmallerZandVolume(firstNode, secondNode);
